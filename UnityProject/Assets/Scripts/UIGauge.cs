@@ -48,8 +48,7 @@ public class UIGauge : MonoBehaviour
 		{
 			if(mNowHp > mMoveHp)
 			{
-				Debug.Log(mNowHp + "  mNow ================= mMoveHP" + mMoveHp);
-				mNowHp -= Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.4f);
+				mNowHp -= Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.8f);
 				if(mNowHp < mMoveHp)
 				{
 					mNowHp = mMoveHp;	
@@ -59,7 +58,7 @@ public class UIGauge : MonoBehaviour
 			}
 			else
 			{
-				mNowHp += Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.4f);
+				mNowHp += Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.8f);
 				if(mNowHp > mMoveHp) 
 				{
 					mNowHp = mMoveHp;	
