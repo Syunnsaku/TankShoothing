@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EnemyBulletControll : MonoBehaviour 
 {
+
+	private void Awake()
+	{
+	}
+
 	private void Update()
 	{
 		gameObject.transform.Translate(Vector3.forward * (Time.deltaTime * 100));
@@ -19,6 +24,8 @@ public class EnemyBulletControll : MonoBehaviour
 		Bullet aBullet = gameObject.GetComponent<Bullet>();
 
 		if(aTankController == null) { return; }
+		aTankController.SetAlert(false);
+		mTankController = null;
 		aTankController.Damage(aBullet.AttackPower);
 
 		GameObject aHitEffect         = Instantiate(Resources.Load("Effects/TankHit") as GameObject);
@@ -27,4 +34,5 @@ public class EnemyBulletControll : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	private TankController mTankController;
 }
