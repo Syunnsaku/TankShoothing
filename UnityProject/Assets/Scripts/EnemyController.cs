@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour
 	public void Fire()
 	{
 		GameObject aBullet = Instantiate(Resources.Load("Bullets/Shell")) as GameObject;
+		aBullet.layer = 9;
 		aBullet.transform.rotation = new Quaternion(0.0f,180.0f,0.0f,0.0f);
 		aBullet.transform.position = mInjectionPoint.transform.position;
 		aBullet.AddComponent<EnemyBulletControll>();
