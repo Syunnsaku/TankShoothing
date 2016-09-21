@@ -19,9 +19,10 @@ public class TankManager : MonoBehaviour
 		mTankObject                    = Instantiate(Resources.Load("Tanks/DefaultTank") as GameObject);
 		mTankObject.transform.parent   = gameObject.transform;
 		mTankObject.transform.position = new Vector3(0f,0.5f,5f);
-		mTankController                = mTankObject.AddComponent<TankController>();
 		mTankComponent                 = mTankObject.AddComponent<Tank>();
-		mTankComponent.SetHelth(10);
+		mTankController                = mTankObject.AddComponent<TankController>();
+		mTankController.SetTank(mTankComponent);
+		mTankComponent.SetHelth(100);
 	}
 
 	//===================================

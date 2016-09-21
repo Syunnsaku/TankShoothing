@@ -7,23 +7,24 @@ public class UIGauge : MonoBehaviour
 {
 	public Image HpSprite;
 	public Image MoveSprite;
+	public Slider HPSlider;
+	public Slider MoveSlider;
 	public GameObject actionLabel;
 
 	private void Awake()
 	{
-		mDamageColor = new Vector4(0.5f, 0, 0, 1);
-		mHealColor = new Vector4(0.3f, 1, 0.5f, 1);
 	}
 
 	public void SetUp(float iMaxHP)
 	{
-		mMaxHp = iMaxHP;
-		mNowHp = mMaxHp;
-		HpSprite.fillAmount   = mNowHp  / mMaxHp;
-		MoveSprite.fillAmount = mMoveHp / mMaxHp;
+		mMaxHp  = iMaxHP;
+		mNowHp  = mMaxHp;
+		mMoveHp = mMaxHp;
+		HPSlider.value   = 1.0f;
+		MoveSlider.value = 1.0f;
 	}
 
-	public void OnDamage(int iDamage)
+	public void OnDamage(float iDamage)
 	{
 		mMoveHp -= iDamage;
 		if(mMoveHp < 0) 
@@ -47,26 +48,25 @@ public class UIGauge : MonoBehaviour
 		{
 			if(mNowHp > mMoveHp)
 			{
-				mNowHp -= Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.3f);
+				Debug.Log(mNowHp + "  mNow ================= mMoveHP" + mMoveHp);
+				mNowHp -= Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.4f);
 				if(mNowHp < mMoveHp)
 				{
 					mNowHp = mMoveHp;	
 				}
-				MoveSprite.color      = mDamageColor;
-				HpSprite.fillAmount   = mMoveHp / mMaxHp;
-				MoveSprite.fillAmount = mNowHp / mMaxHp;
+				HPSlider.value   = mMoveHp / mMaxHp;
+				MoveSlider.value = mNowHp / mMaxHp;
 			}
 			else
 			{
-				mNowHp += Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.3f);
+				mNowHp += Mathf.FloorToInt(mMaxHp * Time.deltaTime * 0.4f);
 				if(mNowHp > mMoveHp) 
 				{
 					mNowHp = mMoveHp;	
 				}
 
-				MoveSprite.color      = mHealColor;
-				HpSprite.fillAmount   = mNowHp  / mMaxHp;
-				MoveSprite.fillAmount = mMoveHp / mMaxHp;
+				HPSlider.value   = mMoveHp / mMaxHp;
+				MoveSlider.value = mNowHp / mMaxHp;
 
 			}
 		}
@@ -74,6 +74,4 @@ public class UIGauge : MonoBehaviour
 	private float   mMaxHp;
 	private float   mNowHp;
 	private float   mMoveHp;
-	private Vector4 mDamageColor;
-	private Vector4 mHealColor;
 }

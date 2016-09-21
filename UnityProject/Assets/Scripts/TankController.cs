@@ -20,12 +20,21 @@ public class TankController : MonoBehaviour
 	//===================================
 	public bool GetIsPermission()                   { return mIsPermission;          }
 	public void SetIsPermission(bool iIsPermission) { mIsPermission = iIsPermission; }
-
+	public void SetTank(Tank iTank)                 { mTank = iTank;                 }    
 	//===================================
 	// Public Variable
 	//===================================
 	public float CooldownTime        = 1.00f;
 	public float CoolDownTimeCount   = 0.00f;
+
+	public void Damage(float iDamage)
+	{
+		mUIGauge.OnDamage(iDamage);
+
+		bool aLive = mTank.Damage(iDamage);
+		if(aLive == false) { Death(); }
+
+	}
 
 	//===================================
 	// Update
@@ -36,13 +45,14 @@ public class TankController : MonoBehaviour
 		mIsCoolDown     = false;
 		mInjectionPoint = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
 		mTankAnimator   = gameObject.GetComponent<Animator>();
-		//SetHpBar();
 	}
 
 	private void SetHpBar()
 	{
-		GameObject aMenuBar = UIManager.GetInstance().BootUI("HPGauge","Menu_Main",UIManager.Anchor.TOP.ToString());
-		aMenuBar.transform.localPosition = Vector3.zero;
+		GameObject aMenuBar = UIManager.GetInstance().BootUI("HPGauge","Menu_Main",UIManager.Anchor.BOTTOM.ToString());
+		aMenuBar.transform.localPosition = new Vector3(0.0f,50.0f,0.0f);
+		mUIGauge                         = aMenuBar.GetComponent<UIGauge>();
+		mUIGauge.SetUp(mTank.Helth);
 	}
 
 	//===================================
@@ -52,6 +62,7 @@ public class TankController : MonoBehaviour
 	{
 		mIsPermission = true;
 		mTankAnimator.SetBool("Idle",true);
+		SetHpBar();
 	}
 
 	//===================================
@@ -145,6 +156,8 @@ public class TankController : MonoBehaviour
 	//===================================
 	// Private Variable
 	//===================================
+	private Tank       mTank;
+	private UIGauge    mUIGauge;
 	private GameObject mInjectionPoint;
 	private bool       mIsPermission;
 	private bool       mIsCoolDown;

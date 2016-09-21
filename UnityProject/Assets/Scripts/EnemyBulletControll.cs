@@ -15,18 +15,15 @@ public class EnemyBulletControll : MonoBehaviour
 
 	private void OnCollisionEnter(Collision iCollision)
 	{
-		Tank aTank = iCollision.gameObject.GetComponent<Tank>();
 		TankController aTankController = iCollision.gameObject.GetComponent<TankController>();
-		if(aTank == null || aTankController == null) { return; }
-		GameObject aHitEffect = Instantiate(Resources.Load("Effects/TankHit") as GameObject);
+		Bullet aBullet = gameObject.GetComponent<Bullet>();
+
+		if(aTankController == null) { return; }
+		aTankController.Damage(aBullet.AttackPower);
+
+		GameObject aHitEffect         = Instantiate(Resources.Load("Effects/TankHit") as GameObject);
 		aHitEffect.AddComponent<EffectOneShot>();
 		aHitEffect.transform.position = gameObject.transform.position;
-		Bullet aBullet = gameObject.GetComponent<Bullet>();
-		bool aLive = aTank.Damage(aBullet.AttackPower);
-		if(aLive == false)
-		{
-			aTankController.Death();
-		}
 		Destroy(gameObject);
 	}
 
