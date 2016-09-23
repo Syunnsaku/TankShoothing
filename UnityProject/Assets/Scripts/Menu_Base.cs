@@ -16,7 +16,7 @@ public class Menu_Base : MonoBehaviour
 	protected virtual void Awake()
 	{
 		Button[] aButtons;
-		mCanvas = gameObject.GetComponent<Canvas>();
+		//mCanvas = gameObject.GetComponent<Canvas>();
 
 		aButtons = gameObject.GetComponentsInChildren<Button>();
 		foreach(Button aButton in aButtons)
@@ -52,6 +52,6 @@ public class Menu_Base : MonoBehaviour
 	//===================================
 	// Pirvate Variable
 	//===================================
-	private Dictionary<GameObject,Button> mButtons = new Dictionary<GameObject,Button>();
-	private Canvas mCanvas;
+	//private Dictionary<GameObject,Button> mButtons = new Dictionary<GameObject,Button>();
+	//private Canvas mCanvas;
 }
