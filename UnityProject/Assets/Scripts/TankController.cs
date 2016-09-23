@@ -20,8 +20,10 @@ public class TankController : MonoBehaviour
 	//===================================
 	public bool GetIsPermission()                   { return mIsPermission;          }
 	public void SetIsPermission(bool iIsPermission) { mIsPermission = iIsPermission; }
-	public void SetTank(Tank iTank)                 { mTank = iTank;                 }    
-	//===================================
+	public void SetTank(Tank iTank)                 { mTank = iTank;                 }
+	public void SetAlert(bool iIsAlert)             { mIsAlert = iIsAlert;           }
+
+	//===================================Is
 	// Public Variable
 	//===================================
 	public float CooldownTime        = 1.00f;
@@ -79,6 +81,20 @@ public class TankController : MonoBehaviour
 		TankControlle();
 	}
 
+	public void BootAlert()
+	{
+		Menu_Main aMenuMain = UIManager.GetInstance().GetMenu("Menu_Main").GetComponent<Menu_Main>();
+		aMenuMain.UI_Alert.SetActive(true);
+		aMenuMain.UI_Alert.transform.SetAsLastSibling();
+
+	}
+
+	public void TerminateAlert()
+	{
+		Menu_Main aMenuMain = UIManager.GetInstance().GetMenu("Menu_Main").GetComponent<Menu_Main>();
+		aMenuMain.UI_Alert.SetActive(false);
+	}
+
 	//===================================
 	// Start
 	//===================================
@@ -92,6 +108,7 @@ public class TankController : MonoBehaviour
 				mTankAnimator.SetBool("TurnRight",true);
 				mTankAnimator.SetBool("TurnLeft",false);
 				transform.Translate(Vector3.right * (Time.deltaTime * 5));
+				transform.position = new Vector3(Mathf.Clamp(transform.position.x,-45.0f,45.0f),transform.position.y,transform.position.z);
 			}
 			else
 			if(Input.GetKey(KeyCode.LeftArrow))
@@ -100,6 +117,7 @@ public class TankController : MonoBehaviour
 				mTankAnimator.SetBool("TurnRight",false);
 				mTankAnimator.SetBool("TurnLeft",true);
 				transform.Translate(Vector3.left * (Time.deltaTime * 5));
+				transform.position = new Vector3(Mathf.Clamp(transform.position.x,-45.0f,45.0f),transform.position.y,transform.position.z);
 			}
 		}
 		else
@@ -156,10 +174,11 @@ public class TankController : MonoBehaviour
 	//===================================
 	// Private Variable
 	//===================================
+	private bool       mIsPermission;
+	private bool       mIsCoolDown;
+	private bool       mIsAlert;
 	private Tank       mTank;
 	private UIGauge    mUIGauge;
 	private GameObject mInjectionPoint;
-	private bool       mIsPermission;
-	private bool       mIsCoolDown;
-	private Animator   mTankAnimator ;      
+	private Animator   mTankAnimator;
 }

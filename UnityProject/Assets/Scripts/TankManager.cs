@@ -7,13 +7,13 @@ using System.Collections;
 //*******************************************
 // Class
 //*******************************************
-public class TankManager : MonoBehaviour
+public class TankManager : Singleton<TankManager>
 {
-	public void AddCrushingCount() { mCrushingCount++; }
-	//===================================
-	// Start
-	//===================================
-	private void Start ()
+	public void           AddCrushingCount()  { mCrushingCount++;       }
+	public TankController GetTankController() { return mTankController; }
+
+
+	protected override void Initialize()
 	{
 		mCrushingCount                 = 0;
 		mTankObject                    = Instantiate(Resources.Load("Tanks/DefaultTank") as GameObject);
@@ -23,7 +23,12 @@ public class TankManager : MonoBehaviour
 		mTankController                = mTankObject.AddComponent<TankController>();
 		mTankController.SetTank(mTankComponent);
 		mTankComponent.SetHelth(100);
+		GameObject.Find("CameraController").GetComponent<CameraController>().SetTankController(mTankController);
 	}
+	//===================================
+	// Start
+	//===================================
+
 
 	//===================================
 	// private Variable

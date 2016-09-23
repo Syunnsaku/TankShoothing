@@ -48,7 +48,7 @@ public class SpawnManager : Singleton<SpawnManager>
 		Transform SetSpawnPoint              = mSpawnPoints[mWaveData.sheets[0].list[CreatCount].SpawnID].transform;
 		aEnemyObject.transform.parent        = SetSpawnPoint;
 		aEnemyObject.transform.localPosition = Vector3.zero;
-		EnemyController aEnemyController     = aEnemyObject.AddComponent<EnemyController>();
+		aEnemyObject.AddComponent<EnemyController>();
 		Enemy aEnemy                         = aEnemyObject.AddComponent<Enemy>();
 		aEnemy.SetHelth(40);
 		CreatCount++;
