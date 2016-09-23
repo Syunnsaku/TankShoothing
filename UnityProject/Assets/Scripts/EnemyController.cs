@@ -12,13 +12,16 @@ public class EnemyController : MonoBehaviour
 	private void Awake()
 	{
 		mInjectionPoint = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
+		mIsCoolDown     = false;
 	}
 
 	private void Update()
 	{
 		transform.Translate(Vector3.forward * (Time.deltaTime * 15));
-
-		CoolDownTimeCount += Time.deltaTime;
+		if(mIsCoolDown == false)
+		{
+			CoolDownTimeCount += Time.deltaTime;
+		}
 		if(CoolDownTimeCount > CooldownTime)
 		{
 			mIsCoolDown = true;
@@ -40,6 +43,7 @@ public class EnemyController : MonoBehaviour
 		aBullet.AddComponent<EnemyBulletControll>();
 		Bullet aBulletComponent = aBullet.AddComponent<Bullet>();
 		aBulletComponent.AttackPower = 10;
+		mIsCoolDown = false;
 	}
 
 	public void Deth()
