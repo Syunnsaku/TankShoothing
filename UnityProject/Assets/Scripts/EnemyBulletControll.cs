@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyBulletControll : MonoBehaviour 
 {
-
 	private void Awake()
 	{
 	}

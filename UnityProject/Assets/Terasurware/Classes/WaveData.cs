@@ -21,6 +21,7 @@ public class WaveData : ScriptableObject
 		public int EnemyID;
 		public int SpawnID;
 		public float SpawnTime;
+		public int EnemyMoveType;
 	}
 }
 

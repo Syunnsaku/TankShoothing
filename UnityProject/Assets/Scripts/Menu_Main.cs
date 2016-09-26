@@ -24,7 +24,6 @@ public class Menu_Main : Menu_Base
 
 	private void Update()
 	{
-		UI_Alert.transform.SetAsLastSibling();
 	}
 	private Animator   mMainMenuAnimator;      
 }

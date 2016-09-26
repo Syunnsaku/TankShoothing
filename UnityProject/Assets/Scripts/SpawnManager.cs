@@ -35,8 +35,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
 	private void SetWaveData()
 	{
-		mWaveData = Instantiate(Resources.Load("GameData/WaveData")) as WaveData;
-		//CreatCount = mWaveData.sheets[0].list.Count;
+		mWaveData  = Instantiate(Resources.Load("GameData/WaveData"))  as WaveData;
+		mEnemyData = Instantiate(Resources.Load("GameData/EnemyData")) as EnemyData;
 	}
 
 	//===================================
@@ -44,14 +44,21 @@ public class SpawnManager : Singleton<SpawnManager>
 	//===================================
 	private void SpawnEnemy()
 	{
-		GameObject aEnemyObject              = Instantiate(Resources.Load(ENEMY_PATH + "Enemy_" + mWaveData.sheets[0].list[CreatCount].EnemyID)) as GameObject;
+		int    aCreatEnemyID                 = mWaveData.sheets[0].list[CreatCount].EnemyID -1;
+		string aResourceName                 = mEnemyData.sheets[0].list[aCreatEnemyID].Name;
+		GameObject aEnemyObject              = Instantiate(Resources.Load(ENEMY_PATH + aResourceName)) as GameObject;
 		Transform SetSpawnPoint              = mSpawnPoints[mWaveData.sheets[0].list[CreatCount].SpawnID].transform;
 		aEnemyObject.transform.parent        = SetSpawnPoint;
 		aEnemyObject.transform.localPosition = Vector3.zero;
-		aEnemyObject.AddComponent<EnemyController>();
-		Enemy aEnemy                         = aEnemyObject.AddComponent<Enemy>();
-		aEnemy.SetHelth(40);
-		CreatCount++;
+
+		EnemyController aEnemyController     = aEnemyObject.AddComponent<EnemyController>();
+		Enemy           aEnemy               = aEnemyObject.AddComponent<Enemy>();
+
+		aEnemyController.SetEnemy(aEnemy);
+		Enemy.EnemyMoveType aEnemyMoveType   = (Enemy.EnemyMoveType)mWaveData.sheets[0].list[CreatCount].EnemyMoveType;
+		float               aEnemyMoveSpeed  = mEnemyData.sheets[0].list[aCreatEnemyID].Speed;
+		float               aEnemyHelth      = mEnemyData.sheets[0].list[aCreatEnemyID].Heleth;
+		aEnemy.SetUpEnemyData(aEnemyMoveType,aEnemyMoveSpeed,aEnemyHelth);
 	}
 
 	public void Update()
@@ -61,6 +68,7 @@ public class SpawnManager : Singleton<SpawnManager>
 		if(TimeCount > mWaveData.sheets[0].list[CreatCount].SpawnTime)
 		{
 			SpawnEnemy();
+			CreatCount++;
 		}
 
 	}
@@ -113,8 +121,9 @@ public class SpawnManager : Singleton<SpawnManager>
 	// Private Variable
 	//===================================
 	private Dictionary<int,GameObject> mSpawnPoints = new Dictionary<int,GameObject>();
-	private bool mIsGoWave;
-	private WaveData mWaveData;
+	private bool      mIsGoWave;
+	private WaveData  mWaveData;
+	private EnemyData mEnemyData;
 }
 
 

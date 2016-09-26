@@ -26,7 +26,7 @@ public class TankController : MonoBehaviour
 	//===================================Is
 	// Public Variable
 	//===================================
-	public float CooldownTime        = 1.00f;
+	public float CooldownTime        = 0.3f;
 	public float CoolDownTimeCount   = 0.00f;
 
 	public void Damage(float iDamage)
@@ -131,7 +131,7 @@ public class TankController : MonoBehaviour
 		{
 			//mIsPermission = false;
 			mIsCoolDown = false;
-			//LaunchFire();
+			LaunchFire();
 		}
 	}
 
@@ -154,19 +154,17 @@ public class TankController : MonoBehaviour
 	{
 		GameObject aBullet                          = Instantiate(Resources.Load(PATH_BULLETS)) as GameObject;
 		BulletController aBulletControllerComponent = aBullet.AddComponent<BulletController>();
-
-
 		Bullet aBulletComponent         = aBullet.AddComponent<Bullet>();
 
 		aBulletComponent.SetUp(50,20,50,Bullet.BulletType.NORMAL);
 
 		aBullet.transform.parent        = mInjectionPoint.transform;
 		aBullet.transform.position      = mInjectionPoint.transform.position;
-		Vector3 aInjectionPointPosition = mInjectionPoint.transform.position;
+		Vector3 aInjectionPointPosition = new Vector3(mInjectionPoint.transform.position.x,mInjectionPoint.transform.position.y,mInjectionPoint.transform.position.z);
 		aBulletControllerComponent.SetMyTransform(aBullet.transform);
 
-		Vector3 aBulletTargetPosition   = new Vector3(aInjectionPointPosition.x,aInjectionPointPosition.y,(aInjectionPointPosition.z + aBulletComponent.Range));
-		aBulletControllerComponent.SetTarget(aBulletTargetPosition);
+		//Vector3 aBulletTargetPosition   = new Vector3(aInjectionPointPosition.x,aInjectionPointPosition.y,(aInjectionPointPosition.z + aBulletComponent.Range));
+		//aBulletControllerComponent.SetTarget(aBulletTargetPosition);
 
 		aBulletControllerComponent.Fire();
 	}

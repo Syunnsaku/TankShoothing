@@ -6,18 +6,26 @@ public class EnemyController : MonoBehaviour
 {
 	private const string NAME_INJECTIONPOINT = "InjectionPoint";
 
+	public void SetEnemy(Enemy iEnemy) { mEnemy = iEnemy; }
+
 	public float CooldownTime        = 1.00f;
 	public float CoolDownTimeCount   = 0.00f;
 
 	private void Awake()
 	{
-		mInjectionPoint = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
-		mIsCoolDown     = false;
+		mInjectionPoint  = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
+		mInitialPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+		mIsCoolDown      = false;
 	}
 
 	private void Update()
 	{
-		transform.Translate(Vector3.forward * (Time.deltaTime * 15));
+		if(mEnemy == null)          { return; }
+		if(mEnemy.IsSetUp == false) { return; }
+		mTimeCount += Time.deltaTime;
+
+		EnemyMove();
+
 		if(mIsCoolDown == false)
 		{
 			CoolDownTimeCount += Time.deltaTime;
@@ -32,6 +40,30 @@ public class EnemyController : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+	}
+
+	public void EnemyMove()
+	{
+		Vector3 aMovePosition;
+		switch((int)mEnemy.GetEnemyMoveType())
+		{
+			case 0:
+				break;
+			case 1:
+				transform.Translate(Vector3.forward * (Time.deltaTime * 15));
+				break;
+			case 2:
+				transform.Translate(Vector3.forward * (Time.deltaTime * 15));
+				aMovePosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+				transform.position = new Vector3((Mathf.Sin(mTimeCount)*20 ) + mInitialPosition.x,transform.position.y,transform.position.z);
+				break;
+			case 3:
+				transform.Translate(Vector3.forward * (Time.deltaTime * 15));
+				aMovePosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+				transform.position = new Vector3((Mathf.Sin(mTimeCount)*20 ) + mInitialPosition.x,transform.position.y,transform.position.z);
+				break;
+		}
+
 	}
 
 	public void Fire()
@@ -55,4 +87,7 @@ public class EnemyController : MonoBehaviour
 
 	private GameObject mInjectionPoint;
 	private bool       mIsCoolDown;
+	private Enemy      mEnemy;
+	private Vector3    mInitialPosition;
+	private float      mTimeCount;
 }

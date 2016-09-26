@@ -25,6 +25,7 @@ public class Tank : MonoBehaviour
 	//===================================
 	public void SetHelth(float iHelth) { Helth = iHelth; }
 
+
 	public virtual bool Damage(float iDamage) 
 	{
 		bool iLive = true;
