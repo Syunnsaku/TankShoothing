@@ -28,6 +28,7 @@ public class BulletController : MonoBehaviour
 	private void Awake()
 	{
 		Projectile     = transform;
+		mSetDone       = false;
 	}
 
 	private void OnCollisionEnter(Collision iCollision)
@@ -53,8 +54,11 @@ public class BulletController : MonoBehaviour
 
 	public void Fire()
 	{
+		Bullet aBullet = gameObject.GetComponent<Bullet>();
+		Target         = new Vector3(transform.position.x,transform.position.y,transform.position.z + aBullet.Range);
 		StartCoroutine(SimulateProjectile());
 	}
+
 		
 
 	private IEnumerator SimulateProjectile()

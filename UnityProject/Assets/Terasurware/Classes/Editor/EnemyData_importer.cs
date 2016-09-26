@@ -7,9 +7,9 @@ using NPOI.HSSF.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
 
-public class WaveData_importer : AssetPostprocessor {
-	private static readonly string filePath = "Assets/GameData/WaveData.xlsx";
-	private static readonly string exportPath = "Assets/GameData/WaveData.asset";
+public class EnemyData_importer : AssetPostprocessor {
+	private static readonly string filePath = "Assets/GameData/EnemyData.xlsx";
+	private static readonly string exportPath = "Assets/GameData/EnemyData.asset";
 	private static readonly string[] sheetNames = { "Sheet1", };
 	
 	static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
@@ -18,9 +18,9 @@ public class WaveData_importer : AssetPostprocessor {
 			if (!filePath.Equals (asset))
 				continue;
 				
-			WaveData data = (WaveData)AssetDatabase.LoadAssetAtPath (exportPath, typeof(WaveData));
+			EnemyData data = (EnemyData)AssetDatabase.LoadAssetAtPath (exportPath, typeof(EnemyData));
 			if (data == null) {
-				data = ScriptableObject.CreateInstance<WaveData> ();
+				data = ScriptableObject.CreateInstance<EnemyData> ();
 				AssetDatabase.CreateAsset ((ScriptableObject)data, exportPath);
 				data.hideFlags = HideFlags.NotEditable;
 			}
@@ -41,20 +41,20 @@ public class WaveData_importer : AssetPostprocessor {
 						continue;
 					}
 
-					WaveData.Sheet s = new WaveData.Sheet ();
+					EnemyData.Sheet s = new EnemyData.Sheet ();
 					s.name = sheetName;
 				
 					for (int i=1; i<= sheet.LastRowNum; i++) {
 						IRow row = sheet.GetRow (i);
 						ICell cell = null;
 						
-						WaveData.Param p = new WaveData.Param ();
+						EnemyData.Param p = new EnemyData.Param ();
 						
 					cell = row.GetCell(0); p.ID = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(1); p.EnemyID = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(2); p.SpawnID = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(3); p.SpawnTime = (float)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(4); p.EnemyMoveType = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(1); p.Name = (cell == null ? "" : cell.StringCellValue);
+					cell = row.GetCell(2); p.AttackType = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(3); p.Heleth = (float)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(4); p.Speed = (float)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);
