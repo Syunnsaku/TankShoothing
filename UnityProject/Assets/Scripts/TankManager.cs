@@ -21,7 +21,10 @@ public class TankManager : Singleton<TankManager>
 		mTankObject.transform.position = new Vector3(0f,0.5f,5f);
 		mTankComponent                 = mTankObject.AddComponent<Tank>();
 		mTankController                = mTankObject.AddComponent<TankController>();
+
 		mTankController.SetTank(mTankComponent);
+		mTankController.SetAttackType(Tank.AttackType.LASER);
+
 		mTankComponent.SetHelth(100);
 		GameObject.Find("CameraController").GetComponent<CameraController>().SetTankController(mTankController);
 	}

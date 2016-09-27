@@ -14,7 +14,8 @@ public class Bullet : MonoBehaviour
 	//===================================
 	public enum BulletType
 	{
-		NORMAL,
+		NORMAL = 0,
+		Laser  = 1,
 	}
 
 	//===================================
@@ -35,7 +36,4 @@ public class Bullet : MonoBehaviour
 		BulletSpeed = iBulletSpeed;
 		Variation   = iVariation;
 	}
-
-
-
 }

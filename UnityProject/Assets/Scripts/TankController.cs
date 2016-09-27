@@ -10,24 +10,34 @@ using System.Collections;
 public class TankController : MonoBehaviour 
 {
 	//===================================
-	// Constant
-	//===================================
-	private const string NAME_INJECTIONPOINT = "InjectionPoint";
-	private const string PATH_BULLETS        = "Bullets/Shell";
-
-	//===================================
 	// Acseccer
 	//===================================
-	public bool GetIsPermission()                   { return mIsPermission;          }
-	public void SetIsPermission(bool iIsPermission) { mIsPermission = iIsPermission; }
-	public void SetTank(Tank iTank)                 { mTank = iTank;                 }
-	public void SetAlert(bool iIsAlert)             { mIsAlert = iIsAlert;           }
+	public bool GetIsPermission()                          { return mIsPermission;          }
+	public void SetIsPermission(bool iIsPermission)        { mIsPermission = iIsPermission; }
+	public void SetTank(Tank iTank)                        { mTank         = iTank;         }
+	public void SetAlert(bool iIsAlert)                    { mIsAlert      = iIsAlert;      }
+	public void SetAttackType(Tank.AttackType iAttackType) 
+	{
+		mAttackType   = iAttackType;
+		switch((int)mAttackType)
+		{
+			case 1:
+				CooldownTime = 0.8f;
+				break;
+			case 2:
+				CooldownTime = 0.5f;
+				break;
+			case 3:
+				CooldownTime = 0.1f;
+				break;
+		}
+	}
 
-	//===================================Is
+	//=================================
 	// Public Variable
-	//===================================
-	public float CooldownTime        = 0.3f;
+	//=================================
 	public float CoolDownTimeCount   = 0.00f;
+	public float CooldownTime        = 0.8f;
 
 	public void Damage(float iDamage)
 	{
@@ -45,7 +55,6 @@ public class TankController : MonoBehaviour
 	{
 		mIsPermission   = false;
 		mIsCoolDown     = false;
-		mInjectionPoint = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
 		mTankAnimator   = gameObject.GetComponent<Animator>();
 	}
 
@@ -127,12 +136,16 @@ public class TankController : MonoBehaviour
 			mTankAnimator.SetBool("TurnLeft",false);
 		}
 
-		if(mIsPermission && mIsCoolDown)
+		if(Input.GetKey(KeyCode.Space))
 		{
-			//mIsPermission = false;
-			mIsCoolDown = false;
-			LaunchFire();
+			if(mIsPermission && mIsCoolDown)
+			{
+				//mIsPermission = false;
+				mIsCoolDown = false;
+				LaunchFire();
+			}
 		}
+
 	}
 
 	public void Death()
@@ -152,31 +165,33 @@ public class TankController : MonoBehaviour
 	//===================================
 	private void LaunchFire()
 	{
-		GameObject aBullet                          = Instantiate(Resources.Load(PATH_BULLETS)) as GameObject;
-		BulletController aBulletControllerComponent = aBullet.AddComponent<BulletController>();
-		Bullet aBulletComponent         = aBullet.AddComponent<Bullet>();
-
-		aBulletComponent.SetUp(50,20,50,Bullet.BulletType.NORMAL);
-
-		aBullet.transform.parent        = mInjectionPoint.transform;
-		aBullet.transform.position      = mInjectionPoint.transform.position;
-		Vector3 aInjectionPointPosition = new Vector3(mInjectionPoint.transform.position.x,mInjectionPoint.transform.position.y,mInjectionPoint.transform.position.z);
-		aBulletControllerComponent.SetMyTransform(aBullet.transform);
-
-		//Vector3 aBulletTargetPosition   = new Vector3(aInjectionPointPosition.x,aInjectionPointPosition.y,(aInjectionPointPosition.z + aBulletComponent.Range));
-		//aBulletControllerComponent.SetTarget(aBulletTargetPosition);
-
-		aBulletControllerComponent.Fire();
+		switch((int)mAttackType)
+		{
+			case 0:
+				break;
+			case 1:
+				mTank.SingleShot();
+				break;
+			case 2:
+				mTank.Diffusion();
+				break;
+			case 3:
+				mTank.RateOfFire();
+				break;
+			case 4:
+				mTank.Laser();
+				break;
+		}
 	}
 
 	//===================================
 	// Private Variable
 	//===================================
-	private bool       mIsPermission;
-	private bool       mIsCoolDown;
-	private bool       mIsAlert;
-	private Tank       mTank;
-	private UIGauge    mUIGauge;
-	private GameObject mInjectionPoint;
-	private Animator   mTankAnimator;
+	private bool            mIsPermission;
+	private bool            mIsCoolDown;
+	private bool            mIsAlert;
+	private Tank            mTank;
+	private UIGauge         mUIGauge;
+	private Animator        mTankAnimator;
+	private Tank.AttackType mAttackType;
 }
