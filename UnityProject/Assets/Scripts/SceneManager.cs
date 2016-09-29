@@ -30,9 +30,9 @@ public class SceneManager : Singleton<SceneManager>
 		mIsFading  = false;
 
 		this.mBlackTexture = new Texture2D(32, 32, TextureFormat.RGB24, false);
-		this.mBlackTexture.ReadPixels (new Rect (0, 0, 32, 32), 0, 0, false);
-		this.mBlackTexture.SetPixel (0, 0, Color.white);
-		this.mBlackTexture.Apply ();
+		this.mBlackTexture.ReadPixels(new Rect (0, 0, 32, 32), 0, 0, false);
+		this.mBlackTexture.SetPixel(0, 0, Color.white);
+		this.mBlackTexture.Apply();
 	}
 
 	//===================================
@@ -75,7 +75,7 @@ public class SceneManager : Singleton<SceneManager>
 		mCurrentSceneObject.transform.parent        = gameObject.transform;
 		mCurrentSceneObject.transform.localPosition = Vector3.zero;
 		mCurrentSceneObject.name                    = iScene;
-		System.Type aClassName = System.Type.GetType(SceneClassName + iScene);
+		System.Type aClassName = System.Type.GetType(SCENE_CLASS_NAME + iScene);
 		mCurrentSceneObject.AddComponent(aClassName);
 
 		aTime = 0;
@@ -90,6 +90,12 @@ public class SceneManager : Singleton<SceneManager>
 	}
 
 	//===================================
+	// Read Only
+	//===================================
+	private readonly string   SCENE_CLASS_NAME = "Scene";
+
+
+	//===================================
 	// Private Variable
 	//===================================
 	private float          mFadeAlpha;
@@ -98,5 +104,4 @@ public class SceneManager : Singleton<SceneManager>
 	private Texture2D      mBlackTexture;
 	private StateSceneFade mStateScene;
 	private GameObject     mCurrentSceneObject;
-	private const string   SceneClassName = "Scene";
 }

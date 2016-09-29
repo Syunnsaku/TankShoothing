@@ -20,6 +20,7 @@ public class GameInitializer : MonoBehaviour
 	//===================================
 	private void Awake()
 	{
+		Debug.Log(Application.targetFrameRate + "___________");
 		Initialize();
 	}
 
@@ -44,10 +45,13 @@ public class GameInitializer : MonoBehaviour
 	//===================================
 	private void Initialize()
 	{
-		GameObject aUIManager         = Instantiate(Resources.Load("Objects/UIManager")) as GameObject;
+		GameObject aUIManager;
+		GameObject aSceneManager;
+
+		aUIManager                    = Instantiate(Resources.Load("Objects/UIManager")) as GameObject;
 		aUIManager.transform.position = Vector3.zero;
 
-		GameObject aSceneManager      = new GameObject();
+		aSceneManager                 = new GameObject();
 		aSceneManager.name            = "SceneManager";
 		aSceneManager.AddComponent<SceneManager>();
 

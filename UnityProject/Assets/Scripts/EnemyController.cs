@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour 
 {
-	private const string NAME_INJECTIONPOINT = "InjectionPoint";
-
-	public void SetEnemy(Enemy iEnemy) { mEnemy = iEnemy; }
-
+	//===================================
+	// Public Variable
+	//===================================
 	public float CooldownTime        = 1.00f;
 	public float CoolDownTimeCount   = 0.00f;
 
+	//===================================
+	// Acsessor
+	//===================================
+	public void SetEnemy       (Enemy        iEnemy       ) { mEnemy        = iEnemy;       }
+	public void SetSpawnManager(SpawnManager iSpawnManager) { mSpawnManager = iSpawnManager;}
+
+	//===================================
+	// Awake
+	//===================================
 	private void Awake()
 	{
 		mInjectionPoint  = gameObject.transform.FindChild(NAME_INJECTIONPOINT).gameObject;
@@ -18,6 +26,9 @@ public class EnemyController : MonoBehaviour
 		mIsCoolDown      = false;
 	}
 
+	//===================================
+	//  Update
+	//===================================
 	private void Update()
 	{
 		if(mEnemy == null)          { return; }
@@ -38,10 +49,13 @@ public class EnemyController : MonoBehaviour
 		}
 		if(this.gameObject.transform.position.z < -200)
 		{
+			mSpawnManager.SetRemoveSpawnEnemy(gameObject);
 			Destroy(gameObject);
 		}
 	}
-
+	//===================================
+	// Enemy Move
+	//===================================
 	public void EnemyMove()
 	{
 		Vector3 aMovePosition;
@@ -66,6 +80,9 @@ public class EnemyController : MonoBehaviour
 
 	}
 
+	//===================================
+	// Fire
+	//===================================
 	public void Fire()
 	{
 		GameObject aBullet = Instantiate(Resources.Load("Bullets/Shell")) as GameObject;
@@ -78,16 +95,29 @@ public class EnemyController : MonoBehaviour
 		mIsCoolDown = false;
 	}
 
+	//===================================
+	// Deth
+	//===================================
 	public void Deth()
 	{
 		GameObject aEffect = Instantiate(Resources.Load("Effects/Exploson1") as GameObject);
 		aEffect.AddComponent<EffectOneShot>();
+		mSpawnManager.SetRemoveSpawnEnemy(gameObject);
 		Destroy(gameObject);
 	}
 
-	private GameObject mInjectionPoint;
-	private bool       mIsCoolDown;
-	private Enemy      mEnemy;
-	private Vector3    mInitialPosition;
-	private float      mTimeCount;
+	//===================================
+	// Read Only
+	//===================================
+	private readonly string NAME_INJECTIONPOINT = "InjectionPoint";
+
+	//===================================
+	// Private Variable
+	//===================================
+	private bool         mIsCoolDown;
+	private Enemy        mEnemy;
+	private float        mTimeCount;
+	private Vector3      mInitialPosition;
+	private GameObject   mInjectionPoint;
+	private SpawnManager mSpawnManager;
 }
